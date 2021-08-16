@@ -11,7 +11,7 @@
     "copy:assets": "node scripts/copy-assets"
   },
   "dependencies": {
-    "@angular/animations": "^9.1.13",
+    "@angular/animations": "^9.1.13", 
     "@angular/common": "^9.1.13",
     "@angular/compiler": "^9.1.13",
     "@angular/core": "^9.1.13",
@@ -21,6 +21,7 @@
     "@angular/router": "^9.1.13",
     "core-js": "^2.5.4",
     "rxjs": "~6.6.7",
+    "socket.io-client": "^4.0.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },
