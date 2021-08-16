@@ -8,5 +8,7 @@ export class  InputValues {
     imageUrl?: string; 
     chatbotUrl: string;
     context?: string;
-    header? : string
+    header? : string;
+    socketUrl: string;
+    botInitMsg: string;
 }

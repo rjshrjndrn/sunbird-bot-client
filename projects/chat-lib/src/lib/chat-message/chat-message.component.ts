@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ChatLibService } from '../chat-lib.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject} from 'rxjs';
+import { WebsocketioService } from '../websocketio.service';
 
 @Component({
   selector: 'lib-chat-message',
@@ -13,7 +14,7 @@ export class ChatMessageComponent implements OnInit {
   public buttons = [];
   public isButtonAvailable:boolean = false;
   public unsubscribe$ = new Subject<void>();
-  constructor(public chatService: ChatLibService) { 
+  constructor(public chatService: ChatLibService, public wss: WebsocketioService) { 
   }
 
   ngOnInit() {
@@ -29,7 +30,7 @@ export class ChatMessageComponent implements OnInit {
     this.chatService.chatListPush('sent',text);
     const req = {
       data: {
-        Body: indx
+        body: indx
         }
       }
     this.sendMessage(req)
@@ -40,11 +41,11 @@ export class ChatMessageComponent implements OnInit {
   }
 
   sendMessage(req) {
-    this.chatService.chatpost(req).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      this.chatService.chatListPushRevised('recieved', data)
-      
-    },err => {
-      this.chatService.chatListPushRevised('recieved', err.error)
+
+    const reqData = this.chatService.chatpost(req)
+    this.wss.socket.emit("botRequest", {
+      content: reqData,
+      to: this.wss.socket.userID,
     });
   }
 }

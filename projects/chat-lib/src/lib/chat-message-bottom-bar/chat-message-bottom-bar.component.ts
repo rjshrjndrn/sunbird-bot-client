@@ -3,6 +3,7 @@ import {FormGroup, FormControl, Validators} from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject} from 'rxjs';
 import { ChatLibService } from '../chat-lib.service';
+import { WebsocketioService } from '../websocketio.service';
 
 @Component({
   selector: 'lib-chat-message-bottom-bar',
@@ -15,7 +16,7 @@ export class ChatMessageBottomBarComponent implements OnInit {
   });
   message: any;
   public unsubscribe$ = new Subject<void>();
-  constructor(public chatService: ChatLibService) {
+  constructor(public chatService: ChatLibService, public wss: WebsocketioService) {
   }
 
   ngOnInit() {
@@ -28,13 +29,13 @@ export class ChatMessageBottomBarComponent implements OnInit {
       this.messageForm.controls.message.reset();
       const req = {
         data: {
-          Body: msg
+          body: msg
           }
         }
-      this.chatService.chatpost(req).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-          this.chatService.chatListPushRevised('recieved', data)
-      },err => {
-        this.chatService.chatListPushRevised('recieved', err.error)
+      const reqData = this.chatService.chatpost(req)
+      this.wss.socket.emit("botRequest", {
+        content: reqData,
+        to: this.wss.socket.userID,
       });
     }
     }
