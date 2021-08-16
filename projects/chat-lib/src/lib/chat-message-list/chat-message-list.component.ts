@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewChecked, ViewChild, ElementRef, Input } fro
 import { ChatLibService } from '../chat-lib.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject} from 'rxjs';
+import { WebsocketioService } from '../websocketio.service';
 @Component({
   selector: 'lib-chat-message-list',
   templateUrl: './chat-message-list.component.html',
@@ -16,11 +17,12 @@ export class ChatMessageListComponent implements OnInit, AfterViewChecked {
   @Input() appId: string;
   @Input() chatbotUrl:string;
   @Input() context:string;
+  @Input() botInitMsg:string;
 
   public array = [
   ];
   public unsubscribe$ = new Subject<void>();
-  constructor(public chatService: ChatLibService) { }
+  constructor(public chatService: ChatLibService, public wss: WebsocketioService) { }
 
   ngOnInit() {
     this.array = this.chatService.chatList;
@@ -34,13 +36,13 @@ export class ChatMessageListComponent implements OnInit, AfterViewChecked {
     if (this.array.length === 0 ) {
       const req = {
         data: {
-          Body: "0"
+          body: "0"
           }
         }
-      this.chatService.chatpost(req).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-        this.chatService.chatListPushRevised('recieved', data)
-      },err => {
-        this.chatService.chatListPushRevised('recieved', err.error.data)
+      const reqData = this.chatService.chatpost(req)
+      this.wss.socket.emit("botRequest", {
+        content: reqData,
+        to: this.wss.socket.userID,
       });
     }
   }
