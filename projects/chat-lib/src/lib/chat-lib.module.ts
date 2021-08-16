@@ -6,6 +6,7 @@ import { ChatMessageListComponent } from './chat-message-list/chat-message-list.
 import { ChatMessageComponent } from './chat-message/chat-message.component';
 import { ChatMessageBottomBarComponent } from './chat-message-bottom-bar/chat-message-bottom-bar.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { WebsocketioService } from './websocketio.service';
 
 @NgModule({
   declarations: [ChatWindowComponent, ChatMessageListComponent, ChatMessageComponent, ChatMessageBottomBarComponent],
@@ -15,6 +16,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     FormsModule,
     ReactiveFormsModule
   ],
+  providers: [WebsocketioService],
   exports: [ChatWindowComponent, ChatMessageListComponent, ChatMessageComponent, ChatMessageBottomBarComponent]
 })
 export class ChatLibModule {
