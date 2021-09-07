@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/project
     docker:
-      - image: node:10.13.0-jessie 
+      - image: node:12.16.1-jessie 
     steps:
       - checkout
       - run: npm install -g @angular/cli
@@ -21,7 +21,7 @@ jobs:
               echo "Nothing to publish!" 
             fi
 
-
+            
 workflows:
   version: 2.1
   build_and_test:
