@@ -1,6 +1,5 @@
 import { Component, OnInit, AfterViewChecked, ViewChild, ElementRef, Input } from '@angular/core';
 import { ChatLibService } from '../chat-lib.service';
-import { takeUntil } from 'rxjs/operators';
 import { Subject} from 'rxjs';
 import { WebsocketioService } from '../websocketio.service';
 @Component({

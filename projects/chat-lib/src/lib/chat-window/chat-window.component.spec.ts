@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ChatWindowComponent } from './chat-window.component';
 
 describe('ChatWindowComponent', () => {
@@ -8,7 +8,8 @@ describe('ChatWindowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChatWindowComponent ]
+      declarations: [ ChatWindowComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
@@ -16,6 +17,15 @@ describe('ChatWindowComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ChatWindowComponent);
     component = fixture.componentInstance;
+    component.inputValues = {
+      did: 'did123',
+      userId: 'U123',
+      channel: '123',
+      appId: 'sunbird.bot',
+      chatbotUrl: 'https://staging.sunbird.com',
+      socketUrl: 'http://localhost:3005',
+      botInitMsg: 'Hi'
+    }
     fixture.detectChanges();
   });
 

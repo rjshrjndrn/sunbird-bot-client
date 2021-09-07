@@ -1,7 +1,5 @@
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { of as observableOf, throwError as observableThrowError, Observable } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 let uuid = UUID.UUID();
@@ -11,7 +9,6 @@ let uuid = UUID.UUID();
 })
 export class ChatLibService {
 
-  http: HttpClient;
   public chatList = [];
   public userId ;
   public did;
@@ -20,9 +17,7 @@ export class ChatLibService {
   public chatbotUrl;
   public context;
 
-  constructor(http: HttpClient) {
-    this.http = http;
-  }
+  constructor() { }
 
   chatpost(req?: any): Observable<any> {
     if(!this.did) {
@@ -37,6 +32,7 @@ export class ChatLibService {
     req.data['context'] = this.context;
     return req.data;
   }
+
   chatListPush(source, msg) {
     const chat = {
       'text': msg,
